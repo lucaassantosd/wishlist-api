@@ -1,122 +1,64 @@
-Markdown
-# 🎁 Wishlist API
+# Wishlist API 🎁
 
-Uma API REST simples e robusta para gerenciar uma lista de desejos (produtos que você quer comprar). A aplicação permite o cadastro de itens com validação rígida de dados, listagem, atualização e exclusão de produtos.
+Uma API REST completa para gerenciamento de listas de desejos (Wishlist). Este projeto foi desenvolvido na **Semana 2** para praticar a criação de servidores HTTP, rotas RESTful com Express, tratamento de status HTTP e validação rigorosa de dados de entrada.
 
-Este projeto foi desenvolvido durante a **Semana 2** do meu cronograma de estudos focado em dominar a stack Node.js, React e Next.js.
+## 🛠️ Tecnologias Utilizadas
 
----
-
-## 🚀 Tecnologias Utilizadas
-
-*   **Node.js** (Ambiente de execução)
-*   **Express.js** (Micro-framework para construção de APIs REST)
-*   **Zod** (Biblioteca de declaração e validação de esquemas de dados)
-*   **Nodemon** (Ferramenta de live-reload para desenvolvimento rápido)
-*   **JavaScript (ES6+)** com ES Modules (`import`/`export`)
+* **Runtime:** Node.js
+* **Framework:** Express.js
+* **Validação de Dados:** Zod
+* **Ferramenta de Testes:** REST Client (extensão do VS Code via `api.http`)
 
 ---
 
-## ⚙️ Como Instalar e Rodar o Projeto
+## 🚀 Como Executar o Projeto
 
-Para rodar este projeto localmente, você precisará ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
-
-### 1. Clonar o repositório
-```bash
-git clone [https://github.com/SEU_USUARIO/wishlist-api.git](https://github.com/SEU_USUARIO/wishlist-api.git)
-```
-
-2. Entrar na pasta do projeto
-```bash
-cd wishlist-api
-```
-
-3. Instalar as dependências
-
-Rode o comando abaixo para instalar as dependências necessárias de forma exata (utilizando o arquivo package-lock.json salvo no repositório):
-
+### 1. Instalar as Dependências
+Navegue até a pasta da Semana 2 e instale os pacotes:
 ```bash
 npm install
 ```
 
-4. Iniciar o servidor em modo de desenvolvimento
-O projeto já está configurado com o nodemon. O servidor reiniciará automaticamente a cada alteração salva no código:
-
+### 2. Iniciar o Servidor de Desenvolvimento
+Inicie a aplicação utilizando o Nodemon (reinicialização automática ao salvar alterações):
 ```bash
 npm run dev
 ```
+O servidor iniciará por padrão em: `http://localhost:3000`
 
-Retorno esperado no terminal: 🚀 Servidor rodando em http://localhost:3333
+---
 
-🛣️ Rotas da API
-Todas as requisições devem ser feitas para a base: http://localhost:3333
+## 🚦 Como Testar as Rotas
 
-1. Listar Produtos da Wishlist
-Rota: /products
+Neste projeto, utilizamos a extensão **REST Client** do VS Code para disparar requisições. 
 
-Método: GET
+### Passos para Testar:
+1. Certifique-se de ter a extensão **REST Client** instalada no seu VS Code.
+2. Copie o arquivo `api.example.http` para `api.http`:
+   ```bash
+   cp api.example.http api.http
+   ```
+3. Abra o arquivo `api.http` e clique em **"Send Request"** acima de cada rota para testar o CRUD!
 
-Resposta (Sucesso - 200 OK):
+---
 
-```JSON
-[
-  {
-    "id": "1713456789123",
-    "name": "Teclado Mecânico Keychron",
-    "price": 549.90,
-    "url": "[https://keychron.com](https://keychron.com)",
-    "bought": false
-  }
-]
+## ⚙️ Funcionalidades & Regras de Negócio
+
+* **GET `/wishlist`**: Lista todos os itens da sua lista de desejos.
+* **POST `/wishlist`**: Adiciona um item (valida se o nome já existe na lista para evitar duplicados e usa o **Zod** para garantir que o preço seja positivo e os campos obrigatórios estejam preenchidos).
+* **PUT `/wishlist/:id`**: Atualiza as informações de um item existente validando se o novo nome não conflita com outro item.
+* **DELETE `/wishlist/:id`**: Remove o item da lista permanentemente.
+
+---
+
+## 📁 Estrutura do Projeto
+
+```text
+.
+├── src/
+│   └── server.js          # Servidor Express, rotas do CRUD e validações Zod
+├── .gitignore             # Arquivos ignorados pelo Git (como node_modules e api.http)
+├── api.example.http       # Modelo de requisições de teste para o portfólio
+├── package.json           # Gerenciamento de pacotes e scripts do Node.js
+└── README.md              # Documentação
 ```
-
-2. Adicionar Produto à Wishlist
-Rota: /products
-
-Método: POST
-
-Corpo da Requisição (JSON):
-
-```JSON
-{
-  "name": "Teclado Mecânico Keychron",
-  "price": 549.90,
-  "url": "[https://keychron.com](https://keychron.com)"
-}
-```
-
-Regras de Validação (Zod):
-
-name: Obrigatório, do tipo texto e com no mínimo 2 caracteres.
-
-price: Obrigatório, do tipo numérico e obrigatoriamente positivo.
-
-url: Opcional, mas se enviado precisa ser uma URL válida.
-
-Resposta (Sucesso - 201 Created):
-
-```JSON
-{
-  "message": "Produto adicionado com sucesso!",
-  "product": {
-    "id": "1713456789123",
-    "name": "Teclado Mecânico Keychron",
-    "price": 549.90,
-    "url": "[https://keychron.com](https://keychron.com)",
-    "bought": false
-  }
-}
-```
-
-📝 Aprendizados desta semana
-Durante o desenvolvimento desta API, consolidei os seguintes conceitos:
-
-Fundamentos de APIs REST: Como utilizar métodos HTTP (GET, POST) e retornar códigos de status apropriados (200 OK, 201 Created, 400 Bad Request).
-
-Middlewares no Express: Compreensão de como o express.json() atua interceptando as requisições para parsear o corpo em formato JSON.
-
-Validação de Dados com Zod: Como criar esquemas de validação rígidos no backend, capturar erros e retornar respostas amigáveis para o cliente.
-
-Fluxo de Trabalho com NPM: A importância de manter o arquivo package-lock.json no controle de versão para garantir a consistência das dependências do projeto.
-
-Desenvolvido com ☕ por Lucas Domingues.
