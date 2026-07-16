@@ -76,12 +76,13 @@ Método: POST
 
 Corpo da Requisição (JSON):
 
-JSON
+```JSON
 {
   "name": "Teclado Mecânico Keychron",
   "price": 549.90,
   "url": "[https://keychron.com](https://keychron.com)"
 }
+```
 
 Regras de Validação (Zod):
 
@@ -93,7 +94,7 @@ url: Opcional, mas se enviado precisa ser uma URL válida.
 
 Resposta (Sucesso - 201 Created):
 
-JSON
+```JSON
 {
   "message": "Produto adicionado com sucesso!",
   "product": {
@@ -104,6 +105,7 @@ JSON
     "bought": false
   }
 }
+```
 
 📝 Aprendizados desta semana
 Durante o desenvolvimento desta API, consolidei os seguintes conceitos:
