@@ -1,0 +1,155 @@
+### =========================================================================
+### CONFIGURAÇÃO DE AMBIENTE
+### =========================================================================
+@baseUrl = http://localhost:3333
+
+# Nota: Como os IDs são gerados dinamicamente com Date.now() no backend,
+# ao testar o PUT e o DELETE, copie o ID gerado na resposta do passo 2
+# e substitua na variável abaixo para que os testes funcionem perfeitamente.
+@idDoProdutoCriado = 1784170530271
+
+
+### =========================================================================
+### 1. READ (LISTAR VAZIO)
+### =========================================================================
+
+### Listar todos os produtos (Deve retornar um array vazio: [])
+GET {{baseUrl}}/products
+
+
+### =========================================================================
+### 2. CREATE (CADASTROS & VALIDAÇÕES)
+### =========================================================================
+
+### Criar Produto 1 (Caminho Feliz)
+# Deve retornar 201 Created. Copie o ID retornado aqui para usar no PUT/DELETE!
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "Teclado Mecânico Keychron",
+  "price": 549.90,
+  "url": "https://keychron.com"
+}
+
+###
+
+### Criar Produto 2 (Caminho Feliz - Sem URL opcional)
+# Deve retornar 201 Created.
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "Mouse Logitech MX Master",
+  "price": 450.00
+}
+
+###
+
+### Testar Regra de Negócio: Impedir Duplicados (Mesmo Nome)
+# Deve retornar 409 Conflict. (Valida letras maiúsculas/minúsculas)
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "teclado mecânico keychron",
+  "price": 600.00
+}
+
+###
+
+### Testar Validação Zod: Nome Curto
+# Deve retornar 400 Bad Request.
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "A",
+  "price": 100.00
+}
+
+###
+
+### Testar Validação Zod: Preço Negativo
+# Deve retornar 400 Bad Request.
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "Monitor LG UltraWide",
+  "price": -1200.00
+}
+
+###
+
+### Testar Validação Zod: URL Inválida
+# Deve retornar 400 Bad Request.
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "Monitor LG UltraWide",
+  "price": 1200.00,
+  "url": "link-invalido-sem-http"
+}
+
+
+### =========================================================================
+### 3. READ (LISTAR COM DADOS)
+### =========================================================================
+
+### Listar todos os produtos novamente
+# Deve retornar um array com os 2 produtos válidos cadastrados anteriormente.
+GET {{baseUrl}}/products
+
+
+### =========================================================================
+### 4. UPDATE (ATUALIZAR PRODUTO)
+### =========================================================================
+
+### Atualizar dados de um produto existente
+# Altere o ID na URL usando o ID que você copiou no Passo 2.
+# Deve retornar 200 OK com o produto atualizado.
+PUT {{baseUrl}}/products/{{idDoProdutoCriado}}
+Content-Type: application/json
+
+{
+  "name": "Teclado Keychron K2 V2",
+  "price": 599.90,
+  "bought": true
+}
+
+###
+
+### Testar Atualização de Produto Inexistente
+# Deve retornar 404 Not Found.
+PUT {{baseUrl}}/products/999999999999
+Content-Type: application/json
+
+{
+  "name": "Produto Fantasma",
+  "price": 100.00,
+  "bought": false
+}
+
+
+### =========================================================================
+### 5. DELETE (REMOVER PRODUTO)
+### =========================================================================
+
+### Deletar um produto existente
+# Altere o ID na URL usando o ID que você copiou no Passo 2.
+# Deve retornar 200 OK com mensagem de sucesso.
+DELETE {{baseUrl}}/products/{{idDoProdutoCriado}}
+
+###
+
+### Testar Deletar Produto Inexistente
+# Deve retornar 404 Not Found.
+DELETE {{baseUrl}}/products/999999999999
+
+###
+
+### Confirmar Remoção
+# Deve listar a Wishlist sem o produto que acabou de ser deletado.
+GET {{baseUrl}}/products
