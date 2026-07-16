@@ -1,6 +1,6 @@
-# Wishlist API 🎁
+# Wishlist API 🎁 (Semana 2)
 
-Uma API REST completa para gerenciamento de listas de desejos (Wishlist). Este projeto foi desenvolvido na **Semana 2** para praticar a criação de servidores HTTP, rotas RESTful com Express, tratamento de status HTTP e validação rigorosa de dados de entrada.
+Uma API REST completa para gerenciamento de listas de desejos (Wishlist). Este projeto foi desenvolvido na **Semana 2** para praticar a criação de servidores HTTP, rotas RESTful com Express, tratamento de status HTTP e validação rigorosa de dados de entrada usando Zod.
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -20,7 +20,7 @@ npm install
 ```
 
 ### 2. Iniciar o Servidor de Desenvolvimento
-Inicie a aplicação utilizando o Nodemon (reinicialização automática ao salvar alterações):
+Inicie a aplicação utilizando o Nodemon:
 ```bash
 npm run dev
 ```
@@ -28,26 +28,55 @@ O servidor iniciará por padrão em: `http://localhost:3000`
 
 ---
 
-## 🚦 Como Testar as Rotas
+## 🚦 Exemplos Práticos de Requisições (Endpoints)
 
-Neste projeto, utilizamos a extensão **REST Client** do VS Code para disparar requisições. 
+Aqui estão os formatos de dados esperados e retornados pela API ao interagir com as rotas:
 
-### Passos para Testar:
-1. Certifique-se de ter a extensão **REST Client** instalada no seu VS Code.
-2. Copie o arquivo `api.example.http` para `api.http`:
-   ```bash
-   cp api.example.http api.http
-   ```
-3. Abra o arquivo `api.http` e clique em **"Send Request"** acima de cada rota para testar o CRUD!
+### 1. Adicionar Item à Lista (POST `/wishlist`)
+* **Corpo da requisição (JSON):**
+```json
+{
+  "name": "PlayStation 5 Pro",
+  "description": "Console de última geração para jogar nos finais de semana.",
+  "price": 6999.90
+}
+```
+* **Resposta de sucesso (201 Created):**
+```json
+{
+  "message": "Item adicionado com sucesso!",
+  "item": {
+    "id": "e8a21f8a-c603-4bc7-938b-d760b2984fe7",
+    "name": "PlayStation 5 Pro",
+    "description": "Console de última geração para jogar nos finais de semana.",
+    "price": 6999.90,
+    "createdAt": "2026-07-16T22:30:00.000Z"
+  }
+}
+```
 
----
+### 2. Listar Itens (GET `/wishlist`)
+* **Resposta de sucesso (200 OK):**
+```json
+[
+  {
+    "id": "e8a21f8a-c603-4bc7-938b-d760b2984fe7",
+    "name": "PlayStation 5 Pro",
+    "price": 6999.90
+  }
+]
+```
 
-## ⚙️ Funcionalidades & Regras de Negócio
-
-* **GET `/wishlist`**: Lista todos os itens da sua lista de desejos.
-* **POST `/wishlist`**: Adiciona um item (valida se o nome já existe na lista para evitar duplicados e usa o **Zod** para garantir que o preço seja positivo e os campos obrigatórios estejam preenchidos).
-* **PUT `/wishlist/:id`**: Atualiza as informações de um item existente validando se o novo nome não conflita com outro item.
-* **DELETE `/wishlist/:id`**: Remove o item da lista permanentemente.
+### 3. Exemplo de Erro de Validação (Preço negativo ou nome ausente)
+* **Resposta de erro (400 Bad Request):**
+```json
+{
+  "error": "Dados inválidos",
+  "details": [
+    "O preço deve ser um número positivo"
+  ]
+}
+```
 
 ---
 
