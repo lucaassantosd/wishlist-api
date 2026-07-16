@@ -58,7 +58,7 @@ Método: GET
 
 Resposta (Sucesso - 200 OK):
 
-JSON
+```JSON
 [
   {
     "id": "1713456789123",
@@ -68,6 +68,7 @@ JSON
     "bought": false
   }
 ]
+```
 
 2. Adicionar Produto à Wishlist
 Rota: /products
